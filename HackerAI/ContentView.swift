@@ -113,7 +113,7 @@ struct ContentView: View {
                     model.goHome()
                 }
             }
-            .onChange(of: settings.homeURL) { _, newValue in
+            .onChange(of: settings.homeURL) { newValue in
                 model.homeURL = newValue
                 model.goHome()
             }
