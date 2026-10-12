@@ -54,7 +54,7 @@ jobs:
       #   PROVISIONING_PROFILE_BASE64 (ملف .mobileprovision مُرمّز base64)
       #   KEYCHAIN_PASSWORD          (أي كلمة مرور مؤقتة)
       - name: Import signing certificate
-        if: ${{ secrets.BUILD_CERTIFICATE_BASE64 != '' && secrets.PROVISIONING_PROFILE_BASE64 != '' }}
+        if: ${{ vars.SIGNING_ENABLED == 'true' }}
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
           P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
@@ -80,7 +80,7 @@ jobs:
           cp "$PROFILE_PATH" ~/Library/MobileDevice/Provisioning\ Profiles/$UUID.mobileprovision
 
       - name: Rebuild with signing
-        if: ${{ secrets.BUILD_CERTIFICATE_BASE64 != '' && secrets.PROVISIONING_PROFILE_BASE64 != '' }}
+        if: ${{ vars.SIGNING_ENABLED == 'true' }}
         run: |
           set -euo pipefail
           xcodebuild \
