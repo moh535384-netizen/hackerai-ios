@@ -63,12 +63,35 @@ final class WebViewModel: ObservableObject {
     @Published var canGoForward = false
     @Published var currentURL = ""
     @Published var errorMessage: String?
+    @Published var toast: String?
     @Published var homeURL: String
 
     weak var webView: WKWebView?
 
     init(homeURL: String) {
         self.homeURL = homeURL
+    }
+
+    func showToast(_ text: String) {
+        toast = text
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            if self.toast == text { self.toast = nil }
+        }
+    }
+
+    /// يفتح نافذة اختيار الملفات داخل صفحة الموقع نفسها (input[type=file]).
+    func triggerSiteFilePicker() {
+        guard let webView = webView else { return }
+        let js = "(function(){var i=document.querySelector('input[type=file]');if(i){i.click();return 'ok';}return 'none';})()"
+        webView.evaluateJavaScript(js) { result, _ in
+            DispatchQueue.main.async {
+                if let r = result as? String, r == "ok" {
+                    self.showToast("تم فتح نافذة الرفع")
+                } else {
+                    self.showToast("استخدم زر الرفع داخل الصفحة")
+                }
+            }
+        }
     }
 
     func reload() { webView?.reload() }

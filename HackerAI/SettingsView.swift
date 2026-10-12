@@ -20,13 +20,13 @@ struct SettingsView: View {
                             Text("رابط الواجهة (Home URL)")
                                 .font(.system(.body, design: .monospaced))
                                 .foregroundColor(.green)
-                            TextField("https://chat.hackerai.co", text: $localURL, axis: .vertical)
+                            TextField("https://chat.hackerai.co", text: $localURL)
                                 .font(.system(.body, design: .monospaced))
                                 .foregroundColor(.white)
-                                .lineLimit(1...3)
                                 .autocorrectionDisabled()
                                 .textInputAutocapitalization(.never)
                                 .keyboardType(.URL)
+                                .disableAutocorrection(true)
                         }
 
                         VStack(alignment: .leading, spacing: 8) {
